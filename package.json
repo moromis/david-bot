@@ -24,6 +24,11 @@
   "scripts": {
     "deploy": "./scripts/deploy.sh",
     "deploy:dev": "./scripts/dev-deploy.sh",
-    "register-commands:dev": "cd src/register_commands && DEV=true node register.js"
+    "register-commands:dev": "cd register_commands && DEV=true node register.js",
+    "test": "jest --passWithNoTests src",
+    "test:watch": "jest --watchAll src",
+    "test:coverage": "yarn test --silent --config jest.config.json --no-cache",
+    "test:badge": "yarn test:coverage && yarn make-coverage-badge --output-path ./cov-badge.svg",
+    "test:make-badge": "yarn make-coverage-badge --output-path ./cov-badge.svg"
   }
 }

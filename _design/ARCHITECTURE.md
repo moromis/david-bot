@@ -1,40 +1,18 @@
 # Commands
-- /swap: swaps your current chore for a different one. notifies the channel
-- /complete: sets your current chore to complete and notifies your reviewer (dm)
-- /chore: lists your chore details
-- /assign: gets a new chore if you don't have one
-- ? /list: lists unassigned chores
-- ? /pick <chore>: picks a particular chore and assigns it to you. will unassign an incomplete chore if you have one
-- /scoreboard <?user>: shows how many chores all users or a particular user have done in the current cycle (generally a month)
-- /history <?user>: shows how many chores a user has done in their lifetime
+## V1
+- /rsvp <response>: responds with an response, limited to yes, no, or maybe
+## V2
+- /vote: start a vote if there's not already one happening
 
 # Passive events
-- every Sunday
-    - shame incomplete chores, return to unassigned
-    - calculate and notify new chores
-- every day
-    - ephemerally remind all users of their chore, if not done
+## V1
+- each Sunday, reset the responses and repost a signup message, store the message id in the db to be edited later with players' responses
+## V2
+- based on the voted day for this week, on that day at midnight reset responses etc.
 
 
 # Schemas
-users
+data
     user
-        id
-        displayName
-        numCycleChores
-        numAllTimeChores
-        inactive
-        extraPointage
-            ↖_ this is just an arbitrary metric that tells the bot how many extra points to award a user each week, depending on
-                your particular use case. ours is that particular people take out and bring in garbage and recycling, and only they
-                do so each week. thus they get an extra point every week.
-        * currentChore (-> chores)
-
-chores
-    chore
-        id
-        displayName
-        description
-        status [one of: todo, assigned, complete]
-        * reviewer (-> users) - can be null
-        * user (-> users) - can be null
+    response
+    currentVote
