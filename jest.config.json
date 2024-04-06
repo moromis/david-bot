@@ -1,0 +1,25 @@
+{
+    "rootDir": "src",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+        "<rootDir>/**/*.js"
+    ],
+    "coveragePathIgnorePatterns": [
+        "node_modules",
+        "test-config",
+        "interfaces",
+        "jestGlobalMocks.js",
+        ".module.js",
+        ".mock.js",
+        "test.js",
+        "debug.js",
+        "constants",
+        ".aws-sam",
+        "debug-commands"
+    ],
+    "coverageDirectory": "<rootDir>/../coverage/",
+    "coverageReporters": [
+        "json-summary",
+        "html"
+    ]
+}
