@@ -3,7 +3,9 @@ const { RESPONSES } = require("../lambda/const");
 
 const testRsvpBody = {
   member: {
-    id: "test123",
+    user: {
+      id: "test123",
+    },
   },
   data: {
     name: data.name,

@@ -1,6 +1,6 @@
 # Commands
 ## V1
-- /rsvp <response>: responds with an response, limited to yes, no, or maybe
+- /rsvp <response>: responds with a response, limited to yes, no, or maybe
 ## V2
 - /vote: start a vote if there's not already one happening
 
@@ -13,6 +13,7 @@
 
 # Schemas
 data
-    user
+    id (user id)
+    name (global_name)
     response
     currentVote

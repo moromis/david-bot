@@ -1,5 +1,5 @@
 const nacl = require("tweetnacl");
-const { handler } = require(".");
+const { handler } = require("./main");
 const { data, rsvp } = require("./commands/rsvp");
 
 jest.mock("tweetnacl");
@@ -18,7 +18,7 @@ const getTestEvent = (dataName, type = 1) => ({
   }),
 });
 
-describe("index", () => {
+describe("main", () => {
   const originalEnv = process.env;
   beforeEach(() => {
     jest.resetModules();

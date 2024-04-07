@@ -16,4 +16,8 @@ build/
 
 coverage/
 
+.aws-sam
+template.yaml
+template.old.yaml
+
 sample-output.md

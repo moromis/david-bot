@@ -24,14 +24,20 @@
     "yargs": "^17.7.2"
   },
   "scripts": {
-    "deploy": "./scripts/deploy.sh",
-    "deploy:dev": "./scripts/dev-deploy.sh",
-    "register-commands:dev": "cd register_commands && DEV=true node register.js",
+    "deploy": "export AWS_PROFILE=david-bot && ./scripts/deploy.sh",
+    "dev:deploy": "export AWS_PROFILE=david-bot-dev && export DEV=true && ./scripts/deploy.sh",
+    "register-commands": "cd register_commands && node register.js",
+    "dev:register-commands": "cd register_commands && DEV=true node register.js",
     "test": "jest --passWithNoTests src",
     "test:watch": "jest --watchAll src",
     "test:coverage": "yarn test --silent --config jest.config.json --no-cache",
     "test:badge": "yarn test:coverage && yarn make-coverage-badge --output-path ./cov-badge.svg",
     "test:make-badge": "yarn make-coverage-badge --output-path ./cov-badge.svg",
-    "install-deps": "yarn && node scripts/recursive-install-yarn.js --rootDir=src"
+    "install-deps": "yarn && node scripts/recursive-install-yarn.js --rootDir=src",
+    "setup-scheduler": "export AWS_PROFILE=david-bot && cd setup/scheduler && ./setup_scheduler.sh",
+    "dev:setup-scheduler": "export AWS_PROFILE=david-bot-dev && export DEV=true && cd setup/scheduler && ./setup_scheduler.sh",
+    "setup-iam": "export AWS_PROFILE=david-bot && cd setup/iam_user && ./setup_iam_user_and_policy.sh",
+    "dev:setup-iam": "export AWS_PROFILE=david-bot-dev && cd setup/iam_user && ./setup_iam_user_and_policy.sh",
+    "generate-template": "cd setup/generate_template && yarn && node generate_template.js"
   }
 }

@@ -1,7 +1,7 @@
 const dotenv = require("dotenv");
 const register = require("./send.js").register;
 dotenv.config({
-  path: !!process.env.DEV === true ? "./.dev.env" : "./.env",
+  path: !!process.env.DEV === true ? "../.dev.env" : "../.env",
 });
 
 if (!process.env.APP_ID || !process.env.BOT_TOKEN) {

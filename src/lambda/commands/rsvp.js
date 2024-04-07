@@ -28,22 +28,43 @@ exports.data = {
   ],
 };
 
-exports.rsvp = (body) => {
+exports.rsvp = async (body) => {
   const response = body.data.options[0].value;
-  db.put(TABLE_NAME, {
-    user: body.member.id,
-    response,
-  });
-  return {
+
+  let ret = {
     statusCode: 200,
     body: JSON.stringify({
       type: 4,
       data: {
-        content: `You've responded with ${response}`,
+        content: `<@${body.member.user.id}>, you've responded "${response}". List updated!`, // TODO: random response here
       },
     }),
     headers: {
       "Content-Type": "application/json",
     },
   };
+
+  await db
+    .put(TABLE_NAME, {
+      id: body.member.user.id,
+      name: body.member.user.global_name,
+      response,
+    })
+    .catch((e) => {
+      console.error(e);
+      ret = {
+        statusCode: 401,
+        body: JSON.stringify({
+          type: 4,
+          data: {
+            content: "Something went wrong.",
+          },
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+    });
+
+  return ret;
 };
