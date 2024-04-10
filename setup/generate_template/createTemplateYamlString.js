@@ -1,4 +1,4 @@
-const { TABLE_NAME } = require("../../src/lambda/const");
+const { TABLE_NAME } = require("../../src/main/const");
 
 exports.createTemplateYamlString = () => {
   return `AWSTemplateFormatVersion: 2010-09-09
@@ -15,7 +15,7 @@ Parameters:
 
 Globals:
   Function:
-    Timeout: 10
+    Timeout: 120
 
 Resources:
   apiGateway:
@@ -29,7 +29,7 @@ Resources:
   mainFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: src/lambda/
+      CodeUri: src/main/
       Handler: main.handler
       Runtime: nodejs20.x
       Architectures:
@@ -52,6 +52,26 @@ Resources:
       Environment:
         Variables:
           PUBLIC_KEY: ${process.env.PUBLIC_KEY}
+
+  Weekly:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: cron-scheduled weekly function - makes a new primary message and stores its ID
+      CodeUri: src/
+      Handler: weekly/weekly.handler
+      Runtime: nodejs20.x
+      Architectures:
+        - arm64
+      MemorySize: 128
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DataTable
+      Environment:
+        Variables:
+          CHANNEL_ID: ${process.env.CHANNEL_ID}
+          BOT_TOKEN: ${process.env.BOT_TOKEN}
+          GUILD_ID: ${process.env.GUILD_ID}
 
   DataTable:
     Type: AWS::Serverless::SimpleTable

@@ -1,5 +1,5 @@
 const { RESPONSES, TABLE_NAME } = require("../const");
-const { db } = require("../services");
+const { db, discord, getSignupMessage } = require("../../services");
 
 exports.data = {
   name: "rsvp",
@@ -31,6 +31,14 @@ exports.data = {
 exports.rsvp = async (body) => {
   const response = body.data.options[0].value;
 
+  // edit the weekly signup message to include the response
+  const { discordId } = await getSignupMessage();
+  await discord.appendToMessage(
+    `${body.member.user.global_name} (${response})`,
+    discordId,
+  );
+
+  // message the channel with the new signup
   let ret = {
     statusCode: 200,
     body: JSON.stringify({
@@ -44,6 +52,7 @@ exports.rsvp = async (body) => {
     },
   };
 
+  // put the response into the db
   await db
     .put(TABLE_NAME, {
       id: body.member.user.id,

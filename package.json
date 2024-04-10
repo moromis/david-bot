@@ -6,7 +6,8 @@
   "private": true,
   "license": "./LICENSE.md",
   "dependencies": {
-    "eslint-plugin-require-path-exists": "^1.1.9"
+    "eslint-plugin-require-path-exists": "^1.1.9",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",

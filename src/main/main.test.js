@@ -3,9 +3,9 @@ const { handler } = require("./main");
 const { data, rsvp } = require("./commands/rsvp");
 
 jest.mock("tweetnacl");
-jest.mock("../lambda/commands/rsvp", () => ({
+jest.mock("../main/commands/rsvp", () => ({
   rsvp: jest.fn(),
-  data: jest.requireActual("../lambda/commands/rsvp").data,
+  data: jest.requireActual("../main/commands/rsvp").data,
 }));
 
 const getTestEvent = (dataName, type = 1) => ({

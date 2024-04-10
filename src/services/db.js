@@ -4,10 +4,12 @@ const {
   PutItemCommand,
   BatchWriteItemCommand,
   GetItemCommand,
+  DeleteItemCommand,
 } = require("@aws-sdk/client-dynamodb");
 const DynamoDBDocumentClient =
   require("@aws-sdk/lib-dynamodb").DynamoDBDocumentClient;
 const { marshall, unmarshall } = require("@aws-sdk/util-dynamodb");
+const { isEmpty } = require("lodash");
 
 const REGION = "us-west-2"; // e.g. "us-east-1"
 const client = new DynamoDBClient({ region: REGION });
@@ -57,6 +59,22 @@ const scan = async (tableId) => {
   return items ? items.map(unmarshall) : [];
 };
 
+const getAll = async (tableId) => {
+  let more = null;
+  const allItems = [];
+  do {
+    const res = await dynamo.send(
+      new ScanCommand({
+        TableName: tableId,
+        ...(more ? { ExclusiveStartKey: more } : {}),
+      }),
+    );
+    more = res?.LastEvaluatedKey;
+    allItems = [...allItems, ...res?.Items?.map(unmarshall)];
+  } while (!isEmpty(more));
+  return allItems;
+};
+
 const getItem = async (tableId, itemId) => {
   const res = await dynamo.send(
     new GetItemCommand({
@@ -70,4 +88,20 @@ const getItem = async (tableId, itemId) => {
   return item ? unmarshall(item) : null;
 };
 
-module.exports = { put, scan, batchWrite, getItem };
+const clear = async (tableId) => {
+  const items = await getAll(tableId);
+  await Promise.all(
+    items.map(async ({ id: itemId }) => {
+      await dynamo.send(
+        new DeleteItemCommand({
+          TableName: tableId,
+          Key: {
+            id: { S: `${itemId}` },
+          },
+        }),
+      );
+    }),
+  );
+};
+
+module.exports = { put, scan, batchWrite, getItem, clear, getAll };

@@ -5,7 +5,7 @@ const fs = require("fs");
 const loadCommands = async () => {
   const commandsOut = [];
 
-  const commandsPath = path.join(__dirname, "..", "src", "lambda", "commands");
+  const commandsPath = path.join(__dirname, "..", "src", "main", "commands");
 
   const commands = fs.readdirSync(commandsPath).filter((x) => {
     return x.slice(-3) === ".js";

@@ -1,0 +1,10 @@
+{
+  "name": "services",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Kevin Ulrich",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^14.14.1"
+  }
+}

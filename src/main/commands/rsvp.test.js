@@ -1,8 +1,17 @@
 const { testRsvpBody } = require("../../test-fixtures/fixtures");
-const { db } = require("../services");
+const { db, getSignupMessage, discord } = require("../../services");
 const { rsvp } = require("./rsvp");
 
-jest.mock("../services/db");
+jest.mock("../../services");
+getSignupMessage.mockReturnValue({
+  discordId: "test",
+});
+
+db.put.mockImplementation(() => {
+  return new Promise((resolve) => {
+    process.nextTick(() => resolve(testRsvpBody));
+  });
+});
 
 describe("rsvp", () => {
   beforeEach(() => {
@@ -25,5 +34,9 @@ describe("rsvp", () => {
     const result = await rsvp(testRsvpBody);
     expect(result).toHaveProperty("body");
     expect(result.statusCode).toBe(401);
+  });
+  it("should append to the current signup message", async () => {
+    const result = await rsvp(testRsvpBody);
+    expect(discord.appendToMessage).toHaveBeenCalled();
   });
 });

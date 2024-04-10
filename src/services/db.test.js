@@ -8,6 +8,7 @@ const {
 } = require("@aws-sdk/client-dynamodb");
 const { db } = require(".");
 const { DynamoDBDocumentClient } = require("@aws-sdk/lib-dynamodb");
+const { getAll } = require("./db");
 
 const dbMock = mockClient(DynamoDBClient);
 const documentMock = mockClient(DynamoDBDocumentClient);
@@ -15,8 +16,6 @@ const documentMock = mockClient(DynamoDBDocumentClient);
 describe("db", () => {
   beforeEach(() => {
     jest.clearAllMocks;
-  });
-  beforeEach(() => {
     dbMock.reset();
     documentMock.reset();
   });
@@ -99,5 +98,16 @@ describe("db", () => {
         new Error("error"),
       );
     });
+  });
+
+  describe("clear", () => {
+    // test("gets all items from the db", async () => {
+    //   jest.mock("./db", () => ({
+    //     ...jest.requireActual("./db"), // import and retain the original functionalities
+    //     getAll: jest.fn(), // overwrite getAll
+    //   }));
+    //   await db.clear("test");
+    //   expect(getAll).toHaveBeenCalled();
+    // });
   });
 });
